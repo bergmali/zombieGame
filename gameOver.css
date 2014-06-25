@@ -1,0 +1,8 @@
+#msg{
+position: absolute; 
+left: 50%; 
+top: 50%; 
+text-align:center; 
+width: 100%; 
+margin-left: -50%; 
+}

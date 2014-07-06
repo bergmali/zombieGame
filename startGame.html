@@ -1,0 +1,28 @@
+<html>
+<head>
+	<link href="startGame.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript" src="http://code.jquery.com/jquery-latest.js" ></script>
+	<script type="text/javascript">
+
+	var showText = function (target, message, index, interval) {    
+		if (index < message.length) { 
+			$(target).append(message[index++]); 
+			setTimeout(function () { showText(target, message, index, interval); }, interval); 
+		} 
+	};
+
+	$(function () { 
+		showText("#msg", unescape("Ber%FChre%0A")+ " die Zombies um sie zu vertreiben!", 0, 100);    
+	});
+
+	function buttonClicked() {	
+		console.log( "button clicked" );
+		window.location.href="zombieGame.html";
+	}
+	</script>
+</head>
+<body>
+	<div id="msg"></div>
+	<button id="btn" type="button" onclick="buttonClicked()">Start!</button>
+</body>
+</html>

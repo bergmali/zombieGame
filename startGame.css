@@ -1,0 +1,16 @@
+#msg{
+position: absolute; 
+left: 50%; 
+top: 50%; 
+text-align:center; 
+width: 100%; 
+margin-left: -50%; 
+}
+
+#btn{
+position: relative; 
+left: 50%;  
+top: 60%;
+text-align:center;
+margin-left: -1%;
+}

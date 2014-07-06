@@ -10,3 +10,12 @@ canvas {
 #main {
 	z-index: -1;
 }
+#score {
+	z-index: 0;
+	position: absolute; 
+	left: 50%; 
+	top: 90%; 
+	text-align:center; 
+	width: 100%; 
+	margin-left: -50%; 
+}

@@ -3,6 +3,7 @@
 <link href="gameOver.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js" ></script>
 <script type="text/javascript">
+var score = 75;
 
 var showText = function (target, message, index, interval) {    
   if (index < message.length) { 
@@ -13,7 +14,11 @@ var showText = function (target, message, index, interval) {
 
 $(function () { 
  
-  showText("#msg", "GameOver!", 0, 100);    
+	if(score >= 50){
+		showText("#msg", "Du hast die Zombies erfolgreich vertrieben... \r\n Score: " + score, 0, 100);
+	}else {
+		showText("#msg", "GameOver!", 0, 100);  
+	}
  
 });
 </script>

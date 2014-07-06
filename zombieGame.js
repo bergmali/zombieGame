@@ -11,6 +11,10 @@ var game = new Game();
 var numZombies = 0;
 var score = 0;
 var actZombie = new Object();
+var interval = new Object();
+var iframe;
+var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
 
 /**
  * Load all images exactly once (Singleton)
@@ -61,16 +65,15 @@ function start() {
 }
 
 function animate() {
-	var interval = setInterval(function () {
+	clearInterval(interval);
+	interval = setInterval(function () {
 			timer()
-		}, 3000);
+		}, 2000);
 	function timer() {
-		if (numZombies < 20) {
+		if (numZombies < 100) {
 			actZombie = new Zombie()
 			actZombie.draw();
-			if(actZombie.hit()){
-				score++;
-			}
+			
 		} else {
 			gameOver();
 		}
@@ -82,6 +85,30 @@ function animate() {
 		window.document.location.href='gameOver.html';
 
 	}
+}
+
+function canvasClicked(e) {
+	console.log("canvas clicked");
+	var zombieX = actZombie.x + images.zombie.width/2;
+	var zombieY = actZombie.y + images.zombie.height/2;
+	var r = 10;
+	var posX;
+	var posY;
+	if (e.pageX || e.pageY) {
+      posX = e.pageX;
+      posY = e.pageY;
+	}
+	
+	// distance position to middle of zombie
+	var dx = posX - zombieX;
+	var dy = posY - zombieY;
+	// checking if click was within the specified radius
+	if((dx*dx + dy*dy) <= (r*r)){
+		score++;
+		var div = document.getElementById("score");
+		div.innerHTML = "Score: " + score +"/100";
+		return;
+	}	
 }
 
 function Drawable() {
@@ -106,13 +133,13 @@ function Drawable() {
 function Zombie() {
 	var w = images.zombie.width;
 	var h = images.zombie.height;
-	var x = Math.random() * (this.canvasWidth - w); // * (this.canvasWidth-this.width)).toFixed();
-	var y = Math.random() * (this.canvasHeight - h); // * (this.canvasHeight-this.height)).toFixed();
+	this.x = Math.floor(Math.random() * (this.canvasWidth - w)); // -10))+5
+	this.y = Math.floor(Math.random() * (this.canvasHeight - h)); // * (this.canvasHeight-this.height)).toFixed();
 	
 	this.draw = function () {
 		numZombies++;
 		this.context.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
-		this.context.drawImage(images.zombie, x, y, w, h);
+		this.context.drawImage(images.zombie, this.x, this.y, w, h);
 		console.log('Draw Zombie Nr.' + numZombies);
 	}
 	
@@ -126,7 +153,7 @@ Zombie.prototype = new Drawable();
 function Background() {
 
 	this.draw = function () {
-		this.context.drawImage(images.background, this.x, this.y);
+		this.context.drawImage(images.background, this.x, this.y, w, h);
 		console.log('Draw background');
 	};
 }
@@ -142,9 +169,16 @@ function Game() {
 		this.bgCanvas = document.getElementById('background');
 		this.mainCanvas = document.getElementById('main');
 
+		this.mainCanvas.width = w;
+		this.mainCanvas.height = h;
+		this.bgCanvas.width = w;
+		this.bgCanvas.height = h; 
+
 		if (!this.bgCanvas || !this.mainCanvas) {
 			throw new util.RuntimeError("drawing_area not found", this);
 		}
+		
+		this.mainCanvas.addEventListener("click", canvasClicked, false);
 
 		// get 2D rendering context for canvas element
 		this.bgContext = this.bgCanvas.getContext("2d");
@@ -163,7 +197,7 @@ function Game() {
 		this.background = new Background();
 		this.background.init(0, 0);
 		this.zombie = new Zombie();
-
+		
 		start();
 	}
 	this.clear = function () {

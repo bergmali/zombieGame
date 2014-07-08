@@ -70,7 +70,7 @@ function animate() {
 			timer()
 		}, 2000);
 	function timer() {
-		if (numZombies < 100) {
+		if (numZombies < 20) {
 			actZombie = new Zombie()
 			actZombie.draw();
 			
@@ -82,7 +82,11 @@ function animate() {
 		game.clear();
 		console.log('gameOver');
 		clearInterval(interval);
-		window.document.location.href='gameOver.html';
+		if(score < 50){
+			window.document.location.href='gameOver.html';
+		} else {
+			window.document.location.href='congratulations.html';
+		}
 
 	}
 }
@@ -104,7 +108,7 @@ function canvasClicked(e) {
 	var dy = posY - zombieY;
 	// checking if click was within the specified radius
 	if((dx*dx + dy*dy) <= (r*r)){
-		score++;
+		score = score +5;
 		var div = document.getElementById("score");
 		div.innerHTML = "Score: " + score +"/100";
 		return;

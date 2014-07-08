@@ -1,30 +1,31 @@
 <html>
 <head>
-<link href="gameOver.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="http://code.jquery.com/jquery-latest.js" ></script>
-<script type="text/javascript">
-var score = 75;
+	<link href="gameOver.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript" src="http://code.jquery.com/jquery-latest.js" ></script>
+	<script type="text/javascript">
 
-var showText = function (target, message, index, interval) {    
-  if (index < message.length) { 
-    $(target).append(message[index++]); 
-    setTimeout(function () { showText(target, message, index, interval); }, interval); 
-  } 
-};
+	var showText = function (target, message, index, interval) {    
+		if (index < message.length) { 
+			$(target).append(message[index++]); 
+			setTimeout(function () { showText(target, message, index, interval); }, interval); 
+		} 
+	};
 
-$(function () { 
+	$(function () { 
  
-	if(score >= 50){
-		showText("#msg", "Du hast die Zombies erfolgreich vertrieben... \r\n Score: " + score, 0, 100);
-	}else {
-		showText("#msg", "GameOver!", 0, 100);  
+		showText("#msg", "GameOver!", 0, 100);
+ 
+	});
+	
+	function closeWindow(){
+		parent.document.getElementsByTagName('iframe').context.returnToPreviousScene;
 	}
- 
-});
-</script>
+	</script>
 </head>
 <body>
 	<div id="msg">
 	</div>
+	<button id="btnReturn" type="button" onclick="window.document.location.href='startGame.html'"> Play again </button>
+	<button id="btnExit" type="button" onClick="closeWindow()" > Exit Game </button>
 </body>
 </html>

@@ -11,6 +11,7 @@ canvas {
 	z-index: -1;
 }
 #score {
+	color: white;
 	z-index: 0;
 	position: absolute; 
 	left: 50%; 

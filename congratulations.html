@@ -3,33 +3,29 @@
 		<link href="congratulations.css" rel="stylesheet" type="text/css" />
 		<script type="text/javascript" src="http://code.jquery.com/jquery-latest.js" ></script>
 		<script type="text/javascript">
-			
-			
-			
+
+			var sceneStopped;
+			function startScene(sceneStoppedCallback, fontSize, storyResourceBasePath, pMode) {
+				sceneStopped = sceneStoppedCallback;
+				init();
+			}
+				
 			var showText = function (target, message, index, interval) {    
 			  if (index < message.length) { 
 				$(target).append(message[index++]); 
 				setTimeout(function () { showText(target, message, index, interval); }, interval); 
 			  } 
-			  //this.parentNode.startScene('Mensa');
 			};
 
 			$(function () { 
-			 
-					showText("#msg", "Du hast die Zombies erfolgreich vertrieben... \r\n Du kannst deine Reise jetzt fortzsetzen ", 0, 100);
-				
-			 
+				showText("#msg", "Du hast die Zombies erfolgreich vertrieben... \r\n Du kannst deine Reise jetzt fortzsetzen ", 0, 100);	
 			});
 
-			function closeWindow(){
-				console.log('closeWindow');
-				// parent.document.getElementById('html').getContext().parentNode.startScene(Mensa);
-				parent.document.getElementsByTagName('iframe').context.startScene(Mensa);
-			}
+			
 		</script>
 	</head>
-	<body>
+	<body onload="window.parent.onSceneLoaded();">
 		<div id="msg"></div>
-		<button id="btnExit" type="button" onClick="closeWindow()">Exit</button>
+		<button id="btnExit" type="button" onClick="sceneStopped()">Exit</button>
 	</body>
 </html>

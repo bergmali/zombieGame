@@ -1,16 +1,8 @@
-#msg{
-position: absolute; 
-left: 50%; 
-top: 50%; 
-text-align:center; 
-width: 100%; 
-margin-left: -50%; 
-}
-
-#btn{
-position: relative; 
-left: 50%;  
-top: 60%;
-text-align:center;
-margin-left: -1%;
+#background {
+    background-repeat:no-repeat;
+	background-size:inherit;
+	background-position:center;
+    display:block;
+    overflow:hidden;
+    white-space:nowrap;
 }

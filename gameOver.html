@@ -4,6 +4,11 @@
 	<script type="text/javascript" src="http://code.jquery.com/jquery-latest.js" ></script>
 	<script type="text/javascript">
 
+	var sceneStopped;
+			function startScene(sceneStoppedCallback, fontSize, storyResourceBasePath, pMode) {
+				sceneStopped = sceneStoppedCallback;
+				init();
+			}
 	var showText = function (target, message, index, interval) {    
 		if (index < message.length) { 
 			$(target).append(message[index++]); 
@@ -17,15 +22,12 @@
  
 	});
 	
-	function closeWindow(){
-		parent.document.getElementsByTagName('iframe').context.returnToPreviousScene;
-	}
 	</script>
 </head>
-<body>
+<body onload="window.parent.onSceneLoaded();">
 	<div id="msg">
 	</div>
 	<button id="btnReturn" type="button" onclick="window.document.location.href='startGame.html'"> Play again </button>
-	<button id="btnExit" type="button" onClick="closeWindow()" > Exit Game </button>
+	<button id="btnExit" type="button" onClick="sceneStopped()" > Exit Game </button>
 </body>
 </html>

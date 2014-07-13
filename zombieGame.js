@@ -13,8 +13,10 @@ var score = 0;
 var actZombie = new Object();
 var interval = new Object();
 var iframe;
+var r = 0;
 var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
 var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+
 
 /**
  * Load all images exactly once (Singleton)
@@ -23,10 +25,8 @@ var images = new function () {
 	// Define images
 	this.background = new Image();
 	this.zombie = new Image();
-	this.weapon = new Image();
-	this.water = new Image();
 
-	var numImages = 4;
+	var numImages = 2;
 	var imgLoaded = 0;
 	// Make sure all images are loaded before starting the game
 	function imageLoaded() {
@@ -41,23 +41,15 @@ var images = new function () {
 	this.zombie.onload = function () {
 		imageLoaded();
 	}
-	this.weapon.onload = function () {
-		imageLoaded();
-	}
-	this.water.onload = function () {
-		imageLoaded();
-	}
 
 	// Set imagesource
-	this.background.src = "images/background.png";
+	this.background.src = "images/background.jpg";
 	this.zombie.src = "images/zombie.png";
-	this.weapon.src = "images/weapon.png";
-	this.water.src = "images/water.png"
 
 };
 
 function start() {
-	this.game.background.draw();
+	game.background.draw();
 	console.log('numZombies' + numZombies);
 
 	animate();
@@ -70,9 +62,11 @@ function animate() {
 			timer()
 		}, 2000);
 	function timer() {
-		if (numZombies < 20) {
+		if (numZombies <= 20) {
+			r = 20;
 			actZombie = new Zombie()
 			actZombie.draw();
+			actZombie.clicked = false;
 			
 		} else {
 			gameOver();
@@ -95,7 +89,6 @@ function canvasClicked(e) {
 	console.log("canvas clicked");
 	var zombieX = actZombie.x + images.zombie.width/2;
 	var zombieY = actZombie.y + images.zombie.height/2;
-	var r = 10;
 	var posX;
 	var posY;
 	if (e.pageX || e.pageY) {
@@ -108,7 +101,10 @@ function canvasClicked(e) {
 	var dy = posY - zombieY;
 	// checking if click was within the specified radius
 	if((dx*dx + dy*dy) <= (r*r)){
-		score = score +5;
+		if (score < 100 || !actZombie.clicked){
+			actZombie.clicked = true;
+			score = score +5;
+		}
 		var div = document.getElementById("score");
 		div.innerHTML = "Score: " + score +"/100";
 		return;
@@ -122,6 +118,7 @@ function Drawable() {
 		this.y = y;
 		this.width = width;
 		this.height = height;
+		this.clicked = true;
 	}
 	this.canvasWidth = 0;
 	this.canvasHeight = 0;
@@ -146,16 +143,11 @@ function Zombie() {
 		this.context.drawImage(images.zombie, this.x, this.y, w, h);
 		console.log('Draw Zombie Nr.' + numZombies);
 	}
-	
-	// implement hit-function to check if the zombie was hit
-	this.hit = function () {
-		
-	}
 }
 Zombie.prototype = new Drawable();
 
 function Background() {
-
+	console.log('new Background');
 	this.draw = function () {
 		this.context.drawImage(images.background, this.x, this.y, w, h);
 		console.log('Draw background');
@@ -169,6 +161,7 @@ Background.prototype = new Drawable();
 function Game() {
 	console.log('new Game');
 	this.init = function () {
+		console.log('game-init');
 		// get the canvas elements to be used for drawing
 		this.bgCanvas = document.getElementById('background');
 		this.mainCanvas = document.getElementById('main');

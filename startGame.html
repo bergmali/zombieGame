@@ -1,28 +1,35 @@
 <html>
-<head>
-	<link href="startGame.css" rel="stylesheet" type="text/css" />
-	<script type="text/javascript" src="http://code.jquery.com/jquery-latest.js" ></script>
-	<script type="text/javascript">
+	<head>
+		<link href="startGame.css" rel="stylesheet" type="text/css" />
+		<script type="text/javascript" src="http://code.jquery.com/jquery-latest.js" ></script>
+		<script type="text/javascript">
 
-	var showText = function (target, message, index, interval) {    
-		if (index < message.length) { 
-			$(target).append(message[index++]); 
-			setTimeout(function () { showText(target, message, index, interval); }, interval); 
-		} 
-	};
-
-	$(function () { 
-		showText("#msg", unescape("Ber%FChre%0A")+ " die Zombies um sie zu vertreiben!", 0, 100);    
-	});
-
-	function buttonClicked() {	
-		console.log( "button clicked" );
-		window.location.href="zombieGame.html";
-	}
-	</script>
-</head>
-<body>
-	<div id="msg"></div>
-	<button id="btn" type="button" onclick="buttonClicked()">Start!</button>
-</body>
+			var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+			var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+	
+			var sceneStopped;
+			function startScene(sceneStoppedCallback, fontSize, storyResourceBasePath, pMode) {
+				sceneStopped = sceneStoppedCallback;
+				init();
+			}
+			
+			function init(){
+				var bg = "images/SpielStart.png";
+				var bgimg = new Image();
+				bgimg.onload = function() {
+					var elem = document.getElementById('background');
+					elem.style.backgroundImage = 'url(' + bg + ')';
+					elem.style.height = h + 'px';
+					elem.style.width = w + 'px';
+					elem.style.position = 'absolute';
+					elem.style.top = '1px';
+					elem.style.left = '1px';					
+				};
+				bgimg.src = bg;
+			}
+		</script>
+	</head>
+	<body onload="window.parent.onSceneLoaded();">
+		<div id="background" onclick="window.location.href='zombieGame.html'"></div>
+	</body>
 </html>
